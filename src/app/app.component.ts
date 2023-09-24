@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { IData, LCData, FormOfDocumentaryCredit, AvailableWithByCode, DataService } from './data.service';
 
 declare var webkitSpeechRecognition: any;
 declare var SpeechRecognition: any;
@@ -10,9 +10,11 @@ declare var SpeechRecognition: any;
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  private data = inject(DataService);
   recognizedText: string = '';
   recording = false;
   recognition: any;
+  trxData: IData = this.data.getData();
   
   constructor() {
     this.recognition = new webkitSpeechRecognition() || new SpeechRecognition();
