@@ -1,20 +1,52 @@
-
-<div class="content" role="main">
-
-
-  <div>>
+<mat-grid-list cols="3">
+  <mat-grid-tile>
+    <form class="example-form">
+      <mat-form-field class="example-full-width">
+        <mat-label>Transaction Type</mat-label>
+        <input matInput name="trxType" [(ngModel)]="trxData.trxType" readonly>
+      </mat-form-field>
     
-  </div>
-  
-  <div>
-    
-    <input matInput placeholder="Enter a prompt here" [(ngModel)]="recognizedText">
-    <button mat-icon-button (click)="startRecording()" *ngIf="!recording">
-      <mat-icon>mic</mat-icon>
-    </button>
-    <button mat-icon-button (click)="stopRecording()" *ngIf="recording" color="warn">
-      <mat-icon>mic_off</mat-icon>
-    </button>
-  </div>
+      <mat-form-field class="example-full-width">
+        <mat-label>LC No.</mat-label>
+        <input matInput name="LC_No" [(ngModel)]="trxData.trxNo" readonly>
+      </mat-form-field>
 
-</div>
+      <mat-form-field class="example-full-width">
+        <mat-label>Form of Documentary Credit</mat-label>
+        <input matInput name="formOfDocumentaryCredit" [(ngModel)]="trxData.lcData.formOfDocumentaryCredit.form">
+      </mat-form-field>
+
+    </form>
+  </mat-grid-tile>
+
+  <mat-grid-tile>
+    <form class="example-form">
+      <mat-form-field class="example-full-width">
+        <mat-label>Leave a comment</mat-label>
+        <textarea matInput placeholder="Ex. It makes me feel..."></textarea>
+      </mat-form-field>
+    </form>
+  </mat-grid-tile>
+  <mat-grid-tile>Tile 3</mat-grid-tile>
+</mat-grid-list>
+
+<mat-grid-list cols="4">
+  <mat-grid-tile></mat-grid-tile>
+  <mat-grid-tile colspan ="2">
+    <mat-expansion-panel [expanded]='true'>
+      <mat-form-field>
+        <input matInput placeholder="Enter a prompt here" [(ngModel)]="recognizedText">
+      </mat-form-field>
+      <button *ngIf="recognizedText" matSuffix mat-icon-button aria-label="Clear" (click)="recognizedText=''">
+        <mat-icon>close</mat-icon>
+      </button>
+      <button mat-icon-button (click)="startRecording()" *ngIf="!recording">
+        <mat-icon>mic</mat-icon>
+      </button>
+      <button mat-icon-button (click)="stopRecording()" *ngIf="recording" color="warn">
+        <mat-icon>mic_off</mat-icon>
+      </button>
+    </mat-expansion-panel>
+  </mat-grid-tile>
+  <mat-grid-tile></mat-grid-tile>
+</mat-grid-list>
