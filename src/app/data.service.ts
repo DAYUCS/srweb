@@ -20,9 +20,9 @@ export interface LCData {
   formOfDocumentaryCredit: FormOfDocumentaryCredit;
   beneficiaryBank:string;
   beneficiary: string;
-  dateOfIssue: string;
+  dateOfIssue: Date;
   applicableRules: string;
-  expiryDate: string;
+  expiryDate: Date;
   expiryPlace: string;
   currencyCode: string;
   amount: number;
@@ -48,10 +48,10 @@ export class DataService {
       },
       beneficiaryBank: "BANK OF INDIA",
       beneficiary: "BENEFICIARY",
-      dateOfIssue: "01/01/2019",
-      applicableRules: "RULES",
-      expiryDate: "01/01/2020",
-      expiryPlace: "PLACE",
+      dateOfIssue: new Date("9/29/2023"),
+      applicableRules: "UCP 600",
+      expiryDate: new Date("12/01/2023"),
+      expiryPlace: "Nanjing China",
       currencyCode: "CNY",
       amount: 10000000000,
       percentageCreditAmountTolerancePlus: 10,

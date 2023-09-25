@@ -12,22 +12,99 @@
       </mat-form-field>
 
       <mat-form-field class="example-full-width">
-        <mat-label>Form of Documentary Credit</mat-label>
-        <input matInput name="formOfDocumentaryCredit" [(ngModel)]="trxData.lcData.formOfDocumentaryCredit.form">
+        <mat-label>Applicant Bank</mat-label>
+        <input matInput name="applicantBank" [(ngModel)]="trxData.lcData.applicantBank">
       </mat-form-field>
 
+      <mat-form-field class="example-full-width">
+        <mat-label>Applicant</mat-label>
+        <input matInput name="applicant" [(ngModel)]="trxData.lcData.applicant">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Beneficiary Bank</mat-label>
+        <input matInput name="beneficiaryBank" [(ngModel)]="trxData.lcData.beneficiaryBank">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Beneficiary</mat-label>
+        <input matInput name="beneficiary" [(ngModel)]="trxData.lcData.beneficiary">
+      </mat-form-field>
     </form>
   </mat-grid-tile>
 
   <mat-grid-tile>
     <form class="example-form">
       <mat-form-field class="example-full-width">
-        <mat-label>Leave a comment</mat-label>
-        <textarea matInput placeholder="Ex. It makes me feel..."></textarea>
+        <mat-label>Form of Documentary Credit</mat-label>
+        <input matInput name="formOfDocumentaryCredit" [(ngModel)]="trxData.lcData.formOfDocumentaryCredit.form">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Issue Date</mat-label>
+        <input matInput name="dateOfIssue" [matDatepicker]="picker1" [(ngModel)]="trxData.lcData.dateOfIssue">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker #picker1></mat-datepicker>
+        <button mat-raised-button (click)="picker1.open()">Open</button>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Applicable Rules</mat-label>
+        <input matInput name="applicableRules" [(ngModel)]="trxData.lcData.applicableRules">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Expiry Date</mat-label>
+        <input matInput name="expiryDate" [matDatepicker]="picker2" [(ngModel)]="trxData.lcData.expiryDate">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker #picker2></mat-datepicker>
+        <button mat-raised-button (click)="picker2.open()">Open</button>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Expiry Place</mat-label>
+        <input matInput name="expiryPlace" [(ngModel)]="trxData.lcData.expiryPlace">
+      </mat-form-field>      
+    </form>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <form class="example-form">
+      <mat-form-field class="example-full-width">
+        <mat-label>Currency Code</mat-label>
+        <input matInput name="currencyCode" [(ngModel)]="trxData.lcData.currencyCode">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Amount</mat-label>
+        <input type="number" matInput name="amount" [(ngModel)]="trxData.lcData.amount">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Credit Amount Tolerance +</mat-label>
+        <input type="number" matInput name="percentageCreditAmountTolerancePlus" [(ngModel)]="trxData.lcData.percentageCreditAmountTolerancePlus">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Credit Amount Tolerance -</mat-label>
+        <input type="number" matInput name="percentageCreditAmountToleranceMinus" [(ngModel)]="trxData.lcData.percentageCreditAmountToleranceMinus">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Additional Amounts Covered</mat-label>
+        <textarea matInput name="additionalAmountsCovered" [(ngModel)]="trxData.lcData.additionalAmountsCovered"></textarea>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Available With...By...</mat-label>
+        <input matInput name="availableWithByCode" [(ngModel)]="trxData.lcData.availableWithByCode.code">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Drafts at...</mat-label>
+        <textarea matInput name="draftsAt" [(ngModel)]="trxData.lcData.draftsAt"></textarea>
       </mat-form-field>
     </form>
   </mat-grid-tile>
-  <mat-grid-tile>Tile 3</mat-grid-tile>
 </mat-grid-list>
 
 <mat-grid-list cols="4">
