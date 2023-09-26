@@ -123,6 +123,9 @@
       <button mat-icon-button (click)="stopRecording()" *ngIf="recording" color="warn">
         <mat-icon>mic_off</mat-icon>
       </button>
+      <button mat-icon-button (click)="callOpenAI()" *ngIf="recognizedText" color="primary">
+        <mat-icon>send</mat-icon>
+      </button>
     </mat-expansion-panel>
   </mat-grid-tile>
   <mat-grid-tile></mat-grid-tile>

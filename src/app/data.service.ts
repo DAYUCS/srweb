@@ -1,9 +1,16 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 export interface IData {
   trxType: string;
   trxNo: string;
   lcData: LCData;
+}
+
+export interface IDataResponse {
+  success: boolean;
+  data: LCData;
 }
 
 export interface FormOfDocumentaryCredit {
@@ -64,10 +71,25 @@ export class DataService {
     }
   };
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
   public getData(): IData {
     return this.data;
   }
   
+  public callOpenAI(data: IData, recognizedText: string): IData {
+    const command = {"command": recognizedText};
+    const oldData = {"data": data.lcData};
+    const request = Object.assign(oldData, command);
+    console.log(request);
+    
+    this.http.post<IDataResponse>(`https://indirectly-many-bream.ngrok-free.app/api/lcTrx`,request).subscribe(result => {
+      console.log(result.data);
+      if (result.success) {
+        data.lcData = result.data;
+      }
+    });
+    
+    return data;
+  }
 }

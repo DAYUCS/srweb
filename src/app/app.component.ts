@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { IData, LCData, FormOfDocumentaryCredit, AvailableWithByCode, DataService } from './data.service';
 
 declare var webkitSpeechRecognition: any;
@@ -16,7 +16,7 @@ export class AppComponent {
   recognition: any;
   trxData: IData = this.data.getData();
   
-  constructor() {
+  constructor(private ref: ChangeDetectorRef) {
     this.recognition = new webkitSpeechRecognition() || new SpeechRecognition();
     this.recognition.continuous = true;
     this.recognition.interimResults = true;
@@ -37,6 +37,16 @@ export class AppComponent {
   stopRecording() {
     this.recording = false;
     this.recognition.stop();
+    if (this.recognizedText && this.recognizedText.length > 0) {
+      this.callOpenAI();
+    } 
+  }
+
+  callOpenAI() {
+    this.trxData = this.data.callOpenAI(this.trxData, this.recognizedText);
+    this.ref.detectChanges();
+    this.recognizedText = '';
+    console.log(this.trxData);
   }
 
 }
