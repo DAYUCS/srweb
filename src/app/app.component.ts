@@ -14,6 +14,8 @@ export class AppComponent {
   recognizedText: string = '';
   recording = false;
   recognition: any;
+  synth: any;
+  voice: SpeechSynthesisVoice;
   trxData: IData = this.data.getData();
   
   constructor(private ref: ChangeDetectorRef) {
@@ -26,6 +28,9 @@ export class AppComponent {
       this.recognizedText = event.results[0][0].transcript;
       console.log(`Confidence: ${event.results[0][0].confidence}`);
     });
+
+    this.synth = window.speechSynthesis;
+    this.voice = this.synth.getVoices().filter((v: SpeechSynthesisVoice) => v.lang === 'en-US')[0];  
   }
 
   startRecording() {
@@ -43,10 +48,21 @@ export class AppComponent {
   }
 
   callOpenAI() {
+    this.playVoice('Let me ask Open AI for advice');
     this.trxData = this.data.callOpenAI(this.trxData, this.recognizedText);
     this.ref.detectChanges();
     this.recognizedText = '';
     console.log(this.trxData);
+    this.playVoice('Please wait a moment, the results will come out shortly.');
+  }
+
+  playVoice(text: string) {
+    var utterance = new SpeechSynthesisUtterance(text);
+    utterance.voice = this.voice;
+    utterance.pitch = 1;
+    utterance.rate = 1;
+    utterance.volume = 1;
+    this.synth.speak(utterance);
   }
 
 }
