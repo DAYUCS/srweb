@@ -1,114 +1,114 @@
-<mat-grid-list cols="3">
-  <mat-grid-tile>
-    <form class="example-form">
-      <mat-form-field class="example-full-width">
-        <mat-label>Transaction Type</mat-label>
-        <input matInput name="trxType" [(ngModel)]="trxData.trxType" readonly>
-      </mat-form-field>
-    
-      <mat-form-field class="example-full-width">
-        <mat-label>LC No.</mat-label>
-        <input matInput name="LC_No" [(ngModel)]="trxData.trxNo" readonly>
-      </mat-form-field>
+<form clrForm clrLayout="horizontal" clrLabelSize="1">
+  <clr-input-container>
+    <label>Transaction Type</label>
+    <input clrInput type="text" [(ngModel)]="trxData.trxType" name="trxType" disabled="true" />
+  </clr-input-container>
+  <clr-input-container>
+    <label>LC No.</label>
+    <input clrInput type="text" [(ngModel)]="trxData.trxNo" name="trxNo" disabled="true" />
+  </clr-input-container>
+  <clr-input-container>
+    <label>Applicant Bank</label>
+    <input clrInput type="text" [(ngModel)]="trxData.lcData.applicantBank" name="applicantBank" required="true"/>
+    <clr-control-error *clrIfError="'required'">This is a required field</clr-control-error>
+  </clr-input-container>
+  <clr-input-container>
+    <label>Applicant</label>
+    <input clrInput type="text" [(ngModel)]="trxData.lcData.applicant" name="applicant" required="true"/>
+    <clr-control-error *clrIfError="'required'">This is a required field</clr-control-error>
+  </clr-input-container>
+  <clr-input-container>
+    <label>Beneficiary Bank</label>
+    <input clrInput type="text" [(ngModel)]="trxData.lcData.beneficiaryBank" name="beneficiaryBank" required="true"/>
+    <clr-control-error *clrIfError="'required'">This is a required field</clr-control-error>
+  </clr-input-container>
+  <clr-input-container>
+    <label>Beneficiary</label>
+    <input clrInput type="text" [(ngModel)]="trxData.lcData.beneficiary" name="beneficiary" required="true"/>
+    <clr-control-error *clrIfError="'required'">This is a required field</clr-control-error>
+  </clr-input-container>
+  <clr-select-container>
+  <label>Form of Documentary Credit</label>
+    <select clrSelect name="formOfDocumentaryCredit" [(ngModel)]="trxData.lcData.formOfDocumentaryCredit.form">
+      <option value="IRREVOCABLE">IRREVOCABLE</option>
+      <option value="IRREVOCABLE TRANSFERABLE">IRREVOCABLE TRANSFERABLE</option>
+    </select>
+  </clr-select-container>
+  <clr-date-container>
+    <label>Issue Date</label>
+    <input clrDate type="date" [(ngModel)]="trxData.lcData.dateOfIssue" name="issueDate" required="true"/>
+  </clr-date-container>
+  <clr-input-container>
+    <label>Applicable Rules</label>
+    <input clrInput type="text" [(ngModel)]="trxData.lcData.applicableRules" name="applicableRules" required="true"/>
+    <clr-control-error *clrIfError="'required'">This is a required field</clr-control-error>
+  </clr-input-container>
+  <clr-date-container>
+    <label>Expiry Date</label>
+    <input clrDate type="date" [(ngModel)]="trxData.lcData.expiryDate" name="expiryDate" required="true"/>
+  </clr-date-container>
+  <clr-input-container>
+    <label>Expiry Place</label>
+    <input clrInput type="text" [(ngModel)]="trxData.lcData.expiryPlace" name="expiryPlace" required="true"/>
+    <clr-control-error *clrIfError="'required'">This is a required field</clr-control-error>
+  </clr-input-container>
+  <clr-select-container>
+    <label>Currency</label>
+    <select clrSelect name="currencyCode" [(ngModel)]="trxData.lcData.currencyCode">
+      <option value="USD">USD</option>
+      <option value="EUR">EUR</option>
+      <option value="INR">INR</option>
+      <option value="JPY">JPY</option>
+      <option value="GBP">GBP</option>
+      <option value="AUD">AUD</option>
+      <option value="CAD">CAD</option>
+      <option value="CHF">CHF</option>
+      <option value="CNY">CNY</option>
+      <option value="HKD">HKD</option>
+      <option value="NZD">NZD</option>
+      <option value="SGD">SGD</option>
+      <option value="SEK">SEK</option>
+      <option value="NOK">NOK</option>
+    </select>
+  </clr-select-container>
+  <clr-input-container>
+    <label>Amount</label>
+    <input clrInput type="number" [(ngModel)]="trxData.lcData.amount" name="amount" required="true"/>
+    <clr-control-error *clrIfError="'required'">This is a required field</clr-control-error>
+  </clr-input-container>
+  <clr-input-container>
+    <label>Credit Amount Tolerance +</label>
+    <input clrInput type="number" [(ngModel)]="trxData.lcData.percentageCreditAmountTolerancePlus" name="percentageCreditAmountTolerancePlus" required="true"/>
+  </clr-input-container>
+  <clr-input-container>
+    <label>Credit Amount Tolerance -</label>
+    <input clrInput type="number" [(ngModel)]="trxData.lcData.percentageCreditAmountToleranceMinus" name="percentageCreditAmountToleranceMinus" required="true"/>
+  </clr-input-container>
+  <clr-textarea-container>
+    <label>Additional Amounts Covered</label>
+    <textarea clrTextarea [(ngModel)]="trxData.lcData.additionalAmountsCovered" name="additionalAmountsCovered" required="true"></textarea>
+  </clr-textarea-container>
+  <clr-select-container>
+    <label>Available With...By...</label>
+    <select clrSelect name="availableWithByCode" [(ngModel)]="trxData.lcData.availableWithByCode.code">
+      <option value="BY ACCEPTANCE">BY ACCEPTANCE</option>
+      <option value="BY DEF PAYMENT">BY DEF PAYMENT</option>
+      <option value="BY MIXED PYMT">BY MIXED PYMT</option>
+      <option value="BY NEGOTIATION">BY NEGOTIATION</option>
+      <option value="BY PAYMENT">BY PAYMENT</option>
+    </select>
+  </clr-select-container>
+  <clr-textarea-container>
+    <label>Drafts at...</label>
+    <textarea clrTextarea [(ngModel)]="trxData.lcData.draftsAt" name="draftsAt" required="true"></textarea>
+  </clr-textarea-container>
+</form>
 
-      <mat-form-field class="example-full-width">
-        <mat-label>Applicant Bank</mat-label>
-        <input matInput name="applicantBank" [(ngModel)]="trxData.lcData.applicantBank">
-      </mat-form-field>
-
-      <mat-form-field class="example-full-width">
-        <mat-label>Applicant</mat-label>
-        <input matInput name="applicant" [(ngModel)]="trxData.lcData.applicant">
-      </mat-form-field>
-
-      <mat-form-field class="example-full-width">
-        <mat-label>Beneficiary Bank</mat-label>
-        <input matInput name="beneficiaryBank" [(ngModel)]="trxData.lcData.beneficiaryBank">
-      </mat-form-field>
-
-      <mat-form-field class="example-full-width">
-        <mat-label>Beneficiary</mat-label>
-        <input matInput name="beneficiary" [(ngModel)]="trxData.lcData.beneficiary">
-      </mat-form-field>
-    </form>
-  </mat-grid-tile>
-
-  <mat-grid-tile>
-    <form class="example-form">
-      <mat-form-field class="example-full-width">
-        <mat-label>Form of Documentary Credit</mat-label>
-        <input matInput name="formOfDocumentaryCredit" [(ngModel)]="trxData.lcData.formOfDocumentaryCredit.form">
-      </mat-form-field>
-
-      <mat-form-field class="example-full-width">
-        <mat-label>Issue Date</mat-label>
-        <input matInput name="dateOfIssue" [matDatepicker]="picker1" [(ngModel)]="trxData.lcData.dateOfIssue">
-        <mat-hint>MM/DD/YYYY</mat-hint>
-        <mat-datepicker #picker1></mat-datepicker>
-        <button mat-raised-button (click)="picker1.open()">Open</button>
-      </mat-form-field>
-
-      <mat-form-field class="example-full-width">
-        <mat-label>Applicable Rules</mat-label>
-        <input matInput name="applicableRules" [(ngModel)]="trxData.lcData.applicableRules">
-      </mat-form-field>
-
-      <mat-form-field class="example-full-width">
-        <mat-label>Expiry Date</mat-label>
-        <input matInput name="expiryDate" [matDatepicker]="picker2" [(ngModel)]="trxData.lcData.expiryDate">
-        <mat-hint>MM/DD/YYYY</mat-hint>
-        <mat-datepicker #picker2></mat-datepicker>
-        <button mat-raised-button (click)="picker2.open()">Open</button>
-      </mat-form-field>
-
-      <mat-form-field class="example-full-width">
-        <mat-label>Expiry Place</mat-label>
-        <input matInput name="expiryPlace" [(ngModel)]="trxData.lcData.expiryPlace">
-      </mat-form-field>      
-    </form>
-  </mat-grid-tile>
-  <mat-grid-tile>
-    <form class="example-form">
-      <mat-form-field class="example-full-width">
-        <mat-label>Currency Code</mat-label>
-        <input matInput name="currencyCode" [(ngModel)]="trxData.lcData.currencyCode">
-      </mat-form-field>
-
-      <mat-form-field class="example-full-width">
-        <mat-label>Amount</mat-label>
-        <input type="number" matInput name="amount" [(ngModel)]="trxData.lcData.amount">
-      </mat-form-field>
-
-      <mat-form-field class="example-full-width">
-        <mat-label>Credit Amount Tolerance +</mat-label>
-        <input type="number" matInput name="percentageCreditAmountTolerancePlus" [(ngModel)]="trxData.lcData.percentageCreditAmountTolerancePlus">
-      </mat-form-field>
-
-      <mat-form-field class="example-full-width">
-        <mat-label>Credit Amount Tolerance -</mat-label>
-        <input type="number" matInput name="percentageCreditAmountToleranceMinus" [(ngModel)]="trxData.lcData.percentageCreditAmountToleranceMinus">
-      </mat-form-field>
-
-      <mat-form-field class="example-full-width">
-        <mat-label>Additional Amounts Covered</mat-label>
-        <textarea matInput name="additionalAmountsCovered" [(ngModel)]="trxData.lcData.additionalAmountsCovered"></textarea>
-      </mat-form-field>
-
-      <mat-form-field class="example-full-width">
-        <mat-label>Available With...By...</mat-label>
-        <input matInput name="availableWithByCode" [(ngModel)]="trxData.lcData.availableWithByCode.code">
-      </mat-form-field>
-
-      <mat-form-field class="example-full-width">
-        <mat-label>Drafts at...</mat-label>
-        <textarea matInput name="draftsAt" [(ngModel)]="trxData.lcData.draftsAt"></textarea>
-      </mat-form-field>
-    </form>
-  </mat-grid-tile>
-</mat-grid-list>
+<clr-input-container>
+  <input clrInput type="text" [(ngModel)]="recognizedText" name="recognizedText" [maxLength]="500" />
+</clr-input-container>
 
 <mat-grid-list cols="4">
-  <mat-grid-tile></mat-grid-tile>
   <mat-grid-tile colspan ="2">
     <mat-expansion-panel [expanded]='true'>
       <mat-form-field>
