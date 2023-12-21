@@ -11,9 +11,11 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { DetailComponent } from './detail/detail.component';
 import { HomeComponent } from './home/home.component';
+import { TrxComponent } from './trx/trx.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
+  { path: 'trx', component: TrxComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
 ]
 @NgModule({
@@ -23,6 +25,7 @@ const routes: Routes = [
     FooterComponent,
     DetailComponent,
     HomeComponent,
+    TrxComponent,
   ],
   imports: [
     BrowserModule,
