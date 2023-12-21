@@ -1,0 +1,26 @@
+<div class="footer">
+
+  <div clrForm clrLayout="verticalInline">
+    <div class="footer-form">
+      <clr-input-container>
+        <input id="recognizedText" clrInput [(ngModel)]="recognizedText">
+        <clr-control-helper *ngIf="recognizedText">
+          <button clrButton clrType="link" (click)="recognizedText=''">Clear</button>
+        </clr-control-helper>
+        <clr-control-helper *ngIf="!recognizedText">
+          Enter your prompt here
+        </clr-control-helper>
+        <clr-control-helper>
+          <button *ngIf="!recording" clrButton clrType="primary" (click)="startRecording()">
+            <cds-icon shape="microphone"></cds-icon>
+          </button>
+          <button *ngIf="recording" clrButton clrType="danger" (click)="stopRecording()">
+            <cds-icon shape="microphone-mute"></cds-icon>
+          </button>
+          <button *ngIf="recognizedText" clrButton clrType="success" (click)="callOpenAI()">Send</button>
+        </clr-control-helper>
+      </clr-input-container>
+    </div>
+  </div>
+
+</div>

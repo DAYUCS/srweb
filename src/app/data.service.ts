@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 export interface IData {
   trxType: string;
@@ -44,7 +44,7 @@ export interface LCData {
   providedIn: 'root'
 })
 export class DataService {
-  public data: IData = {
+  private data: IData = {
     trxType: "Document CREDIT",
     trxNo: "LC-00000001",
     lcData: {
@@ -71,10 +71,20 @@ export class DataService {
     }
   };
 
+  private dataSource = new BehaviorSubject<IData>(this.data);
+  currentData = this.dataSource.asObservable();
+
   constructor(private http: HttpClient) {}
 
-  public getData(): IData {
-    return this.data;
+  changedData(data: IData) {
+    this.dataSource.next(data);
+  }
+
+  updateField(field: string, value: any) {
+    const currentData = this.dataSource.value;
+    const newData = { ...currentData, [field]: value };
+    this.dataSource.next(newData);
+    console.log(newData);
   }
   
   public callOpenAI(data: IData, recognizedText: string): IData {
