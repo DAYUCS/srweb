@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  Input,
+  SimpleChanges,
+} from '@angular/core';
 import { DataService, IData } from '../data.service';
 import { Subscription } from 'rxjs';
 import '@cds/core/icon/register.js';
@@ -6,7 +12,6 @@ import {
   ClarityIcons,
   microphoneIcon,
   microphoneMuteIcon,
-  userIcon,
 } from '@cds/core/icon';
 
 ClarityIcons.addIcons(microphoneIcon, microphoneMuteIcon);
@@ -22,7 +27,8 @@ declare var SpeechRecognition: any;
 export class FooterComponent implements OnInit, OnDestroy {
   trxData!: IData;
   subscription!: Subscription;
-  recognizedText: string = '';
+  @Input() recognizedText: string = '';
+  @Input() parentName: string = '';
   recording = false;
   recognition: any;
   synth: any;
@@ -35,6 +41,10 @@ export class FooterComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
   }
 
   constructor(private data: DataService) {

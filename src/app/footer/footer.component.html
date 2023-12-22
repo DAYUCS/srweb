@@ -3,7 +3,7 @@
   <div clrForm clrLayout="verticalInline">
     <div class="footer-form">
       <clr-input-container>
-        <input id="recognizedText" clrInput [(ngModel)]="recognizedText">
+        <input id="recognizedText" clrInput [(ngModel)]="recognizedText" class="my-custom-input">
         <clr-control-helper *ngIf="recognizedText">
           <button clrButton clrType="link" (click)="recognizedText=''">Clear</button>
         </clr-control-helper>

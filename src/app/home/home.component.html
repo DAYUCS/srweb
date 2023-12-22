@@ -1,9 +1,11 @@
 <app-header></app-header>
+
 <div class="content-container">
 
     <clr-vertical-nav>
 
-        <a clrVerticalNavLink routerLink="/trx" routerLinkActive="active" ariaCurrentWhenActive="page">Register Letter
+        <a clrVerticalNavLink routerLink="/trx" routerLinkActive="active" ariaCurrentWhenActive="page">Register
+            Letter
             of Credit</a>
         <a clrVerticalNavLink routerLink="/second-component" routerLinkActive="active"
             ariaCurrentWhenActive="page">Issue Letter of Credit</a>
@@ -23,52 +25,28 @@
             ariaCurrentWhenActive="page">Advise LC</a>
 
     </clr-vertical-nav>
+
     <div class="content-area">
+
         <div class="clr-row">
-            <div class="clr-col-lg-5 clr-col-md-8 clr-col-12">
+
+            <div class="clr-col-lg-5 clr-col-md-8 clr-col-12" *ngFor="let cardTitle of cardTitles; let index = index">
                 <div class="card">
-                    <h3 class="card-header">Case I</h3>
+                    <h3 class="card-header">Case {{index + 1}}</h3>
                     <div class="card-block">
-                        <h4 class="card-title">Register Letter of Credit</h4>
-                        <div class="card-text">Chinasystems Ltd. Corp. applied for a non-transferable letter of credit
-                            worth US$100,000</div>
+                        <h4 class="card-title">{{cardTitle}}</h4>
+                        <div class="card-text" id="cardText{{index}}">{{cardTexts[index]}}</div>
                     </div>
                     <div class="card-footer">
-                        <button class="btn btn-sm btn-link">Try</button>
+                        <button class="tryButton btn btn-sm btn-link" (click)="tryButtonClick(index)">Try</button>
                     </div>
                 </div>
             </div>
+
         </div>
-        <div class="clr-row">
-            <div class="clr-col-lg-5 clr-col-md-8 clr-col-12">
-                <div class="card">
-                    <h3 class="card-header">Case II</h3>
-                    <div class="card-block">
-                        <h4 class="card-title">Register Letter of Credit</h4>
-                        <div class="card-text">Microsoft China Corp. applied for a transferable letter of credit
-                            worth EUR 200,000</div>
-                    </div>
-                    <div class="card-footer">
-                        <button class="btn btn-sm btn-link">Try</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="clr-row">
-            <div class="clr-col-lg-5 clr-col-md-8 clr-col-12">
-                <div class="card">
-                    <h3 class="card-header">Case III</h3>
-                    <div class="card-block">
-                        <h4 class="card-title">Register Letter of Credit</h4>
-                        <div class="card-text">Chinasystems Ltd. Corp. applied for a non-transferable letter of credit
-                            worth US$100,000 advised by JPMorgan</div>
-                    </div>
-                    <div class="card-footer">
-                        <button class="btn btn-sm btn-link">Try</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </div>
+
 </div>
-<app-footer></app-footer>
+
+<app-footer [recognizedText]="recognizedText" [parentName]="parentName"></app-footer>

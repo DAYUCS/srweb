@@ -93,7 +93,7 @@ export class DataService {
     const request = Object.assign(oldData, command);
     console.log(request);
     
-    this.http.post<IDataResponse>(`https://indirectly-many-bream.ngrok-free.app/api/lcTrx`,request).subscribe(result => {
+    this.http.post<IDataResponse>(`http://10.39.101.186:4000/api/lcTrx`,request).subscribe(result => {
       console.log(result.data);
       if (result.success) {
         data.lcData = result.data;

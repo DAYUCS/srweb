@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./trx.component.scss']
 })
 export class TrxComponent {
-
+  parentName: string = 'trx';
 }
