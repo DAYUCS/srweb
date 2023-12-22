@@ -10,7 +10,8 @@
         <clr-control-helper *ngIf="!recognizedText">
           Enter your prompt here
         </clr-control-helper>
-        <clr-control-helper>
+      </clr-input-container>
+      <clr-control-helper>
           <button *ngIf="!recording" clrButton clrType="primary" (click)="startRecording()">
             <cds-icon shape="microphone"></cds-icon>
           </button>
@@ -19,7 +20,6 @@
           </button>
           <button *ngIf="recognizedText" clrButton clrType="success" (click)="callOpenAI()">Send</button>
         </clr-control-helper>
-      </clr-input-container>
     </div>
   </div>
 
