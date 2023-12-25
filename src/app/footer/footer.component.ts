@@ -5,7 +5,7 @@ import {
   Input,
   SimpleChanges,
 } from '@angular/core';
-import { DataService, IData } from '../data.service';
+import { DataService, IData, IFunction } from '../data.service';
 import { Subscription } from 'rxjs';
 import '@cds/core/icon/register.js';
 import {
@@ -26,6 +26,7 @@ declare var SpeechRecognition: any;
 })
 export class FooterComponent implements OnInit, OnDestroy {
   trxData!: IData;
+  reqFunction!: IFunction;
   subscription!: Subscription;
   @Input() recognizedText: string = '';
   @Input() parentName: string = '';
@@ -79,12 +80,21 @@ export class FooterComponent implements OnInit, OnDestroy {
   }
 
   callOpenAI() {
-    this.playVoice('Let me ask Open AI for advice');
-    this.trxData = this.data.callOpenAI(this.trxData, this.recognizedText);
-    this.data.changedData(this.trxData);
-    this.recognizedText = '';
-    console.log(this.trxData);
-    this.playVoice('Please wait a moment, the results will come out shortly.');
+    if (this.parentName == 'trx') {
+      // find out new fields values
+      this.playVoice('Let me think about it...');
+      this.trxData = this.data.callOpenAITrx(this.trxData, this.recognizedText);
+      this.data.changedData(this.trxData);
+      this.recognizedText = '';
+      console.log(this.trxData);
+      this.playVoice(
+        'Please wait a moment, the new data will be displayed on the screen.'
+      );
+    } else if (this.parentName == 'home') {
+      // identify function id and fields values
+      this.playVoice('OK, please wait...');
+      this.reqFunction = this.data.callOpenAIFunction(this.recognizedText);
+    }
   }
 
   playVoice(text: string) {

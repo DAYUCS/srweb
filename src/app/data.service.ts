@@ -14,18 +14,23 @@ export interface IDataResponse {
 }
 
 export interface FormOfDocumentaryCredit {
-  form: "IRREVOCABLE" |"IRREVOCABLE TRANSFERABLE";
+  form: 'IRREVOCABLE' | 'IRREVOCABLE TRANSFERABLE';
 }
 
-export interface AvailableWithByCode{
-  code: "BY ACCEPTANCE" | "BY DEF PAYMENT" | "BY MIXED PYMT" | "BY NEGOTIATION" | "BY PAYMENT";
+export interface AvailableWithByCode {
+  code:
+    | 'BY ACCEPTANCE'
+    | 'BY DEF PAYMENT'
+    | 'BY MIXED PYMT'
+    | 'BY NEGOTIATION'
+    | 'BY PAYMENT';
 }
 
 export interface LCData {
   applicantBank: string;
   applicant: string;
   formOfDocumentaryCredit: FormOfDocumentaryCredit;
-  beneficiaryBank:string;
+  beneficiaryBank: string;
   beneficiary: string;
   dateOfIssue: Date;
   applicableRules: string;
@@ -40,35 +45,65 @@ export interface LCData {
   draftsAt: string;
 }
 
+export interface FunctionField {
+  fieldName: string;
+  fieldType: string;
+  fieldValue: string;
+  fieldDescription: string;
+}
+
+export interface IFunction {
+  functionName: string;
+  functionId: string;
+  functionModule: string;
+  functionDescription: string;
+  functionFields: FunctionField[];
+}
+
+export interface IFunctionResponse {
+  success: boolean;
+  data: IFunction;
+}
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DataService {
+  baseUrl = 'http://10.39.101.186:8000';
+
+  private reqFunction: IFunction = {
+    functionName: '',
+    functionId: '',
+    functionModule: '',
+    functionDescription: '',
+    functionFields: [],
+  };
+
   private data: IData = {
-    trxType: "Document CREDIT",
-    trxNo: "LC-00000001",
+    trxType: 'Document CREDIT',
+    trxNo: 'LC-00000001',
     lcData: {
-      applicantBank: "BANK OF CHINA",
-      applicant: "APPLICANT",
+      applicantBank: 'BANK OF CHINA',
+      applicant: 'APPLICANT',
       formOfDocumentaryCredit: {
-        form: "IRREVOCABLE TRANSFERABLE"
+        form: 'IRREVOCABLE TRANSFERABLE',
       },
-      beneficiaryBank: "BANK OF INDIA",
-      beneficiary: "BENEFICIARY",
-      dateOfIssue: new Date("9/29/2023"),
-      applicableRules: "UCP 600",
-      expiryDate: new Date("12/01/2023"),
-      expiryPlace: "Nanjing China",
-      currencyCode: "CNY",
+      beneficiaryBank: 'BANK OF INDIA',
+      beneficiary: 'BENEFICIARY',
+      dateOfIssue: new Date('9/29/2023'),
+      applicableRules: 'UCP 600',
+      expiryDate: new Date('12/01/2023'),
+      expiryPlace: 'Nanjing China',
+      currencyCode: 'CNY',
       amount: 10000000000,
       percentageCreditAmountTolerancePlus: 10,
       percentageCreditAmountToleranceMinus: 10,
-      additionalAmountsCovered: "ADDITIONAL AMOUNTS",
+      additionalAmountsCovered: 'ADDITIONAL AMOUNTS',
       availableWithByCode: {
-        code: "BY ACCEPTANCE"
+        code: 'BY ACCEPTANCE',
       },
-      draftsAt: "DRAFTS AT"
-    }
+      draftsAt: 'DRAFTS AT',
+    },
   };
 
   private dataSource = new BehaviorSubject<IData>(this.data);
@@ -86,20 +121,42 @@ export class DataService {
     this.dataSource.next(newData);
     console.log(newData);
   }
-  
-  public callOpenAI(data: IData, recognizedText: string): IData {
-    const command = {"command": recognizedText};
-    const oldData = {"data": data.lcData};
+
+  public callOpenAITrx(data: IData, recognizedText: string): IData {
+    const command = { command: recognizedText };
+    const oldData = { data: data.lcData };
     const request = Object.assign(oldData, command);
     console.log(request);
-    
-    this.http.post<IDataResponse>(`http://10.39.101.186:4000/api/lcTrx`,request).subscribe(result => {
-      console.log(result.data);
-      if (result.success) {
-        data.lcData = result.data;
-      }
-    });
-    
+
+    this.http
+      .post<IDataResponse>(`http://10.39.101.186:4000/api/lcTrx`, request)
+      .subscribe((result) => {
+        console.log(result.data);
+        if (result.success) {
+          data.lcData = result.data;
+        }
+      });
+
     return data;
+  }
+
+  public callOpenAIFunction(recognizedText: string): IFunction {
+    const apiUrl = this.baseUrl + '/function/find';
+    const userCommand = `"` + recognizedText + `"`;
+    const fullUrl = `${apiUrl}?userCommand=${encodeURIComponent(userCommand)}`;
+    const request = Object.assign({ command: recognizedText });
+    this.http.get<IFunctionResponse>(fullUrl).subscribe(
+      (resp) => {
+        // Handle the response data here
+        console.log(resp);
+        this.reqFunction = resp.data;
+      },
+      (error) => {
+        // Handle errors here
+        console.error(error);
+      }
+    );
+
+    return this.reqFunction;
   }
 }
