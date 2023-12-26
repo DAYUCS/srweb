@@ -5,7 +5,7 @@ import {
   Input,
   SimpleChanges,
 } from '@angular/core';
-import { DataService, IData, IFunction } from '../data.service';
+import { DataService, IFunction, INavigateData } from '../data.service';
 import { Subscription } from 'rxjs';
 import '@cds/core/icon/register.js';
 import {
@@ -25,7 +25,7 @@ declare var SpeechRecognition: any;
   styleUrls: ['./footer.component.scss'],
 })
 export class FooterComponent implements OnInit, OnDestroy {
-  trxData!: IData;
+  navigateData!: INavigateData;
   reqFunction!: IFunction;
   subscription!: Subscription;
   @Input() recognizedText: string = '';
@@ -36,8 +36,8 @@ export class FooterComponent implements OnInit, OnDestroy {
   voice: SpeechSynthesisVoice;
 
   ngOnInit() {
-    this.subscription = this.data.currentData.subscribe((data) => {
-      this.trxData = data;
+    this.subscription = this.dataService.currentData.subscribe((data) => {
+      this.navigateData = data;
     });
   }
   ngOnDestroy() {
@@ -48,7 +48,7 @@ export class FooterComponent implements OnInit, OnDestroy {
     console.log(changes);
   }
 
-  constructor(private data: DataService) {
+  constructor(private dataService: DataService) {
     this.recognition = new webkitSpeechRecognition() || new SpeechRecognition();
     this.recognition.continuous = true;
     this.recognition.interimResults = true;
@@ -83,17 +83,24 @@ export class FooterComponent implements OnInit, OnDestroy {
     if (this.parentName == 'trx') {
       // find out new fields values
       this.playVoice('Let me think about it...');
-      this.trxData = this.data.callOpenAITrx(this.trxData, this.recognizedText);
-      this.data.changedData(this.trxData);
+      this.navigateData.data = this.dataService.callOpenAITrx(this.navigateData.data, this.recognizedText);
+      this.dataService.changedData(this.navigateData);
       this.recognizedText = '';
-      console.log(this.trxData);
+      console.log(this.navigateData.data);
       this.playVoice(
         'Please wait a moment, the new data will be displayed on the screen.'
       );
     } else if (this.parentName == 'home') {
       // identify function id and fields values
       this.playVoice('OK, please wait...');
-      this.reqFunction = this.data.callOpenAIFunction(this.recognizedText);
+      this.reqFunction = this.dataService.callOpenAIFunction(this.recognizedText);
+      this.navigateData.selectedFunction = this.reqFunction;
+      this.dataService.changedData(this.navigateData);
+      this.recognizedText = '';
+      console.log(this.navigateData.selectedFunction);
+      this.playVoice(
+        'Please wait a moment, let me find out transaction templates...'
+      );
     }
   }
 

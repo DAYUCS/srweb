@@ -65,6 +65,27 @@ export interface IFunctionResponse {
   data: IFunction;
 }
 
+export interface ITemplate {
+  transactionSummary: string;
+  unitCode: string;
+  moduleName: string;
+  referenceNumber: string;
+  eventNumber: number;
+  customerId: string;
+}
+
+export interface ITemplateResponse {
+  success: boolean;
+  data: ITemplate;
+}
+
+export interface INavigateData {
+  selectedFunction: IFunction;
+  selectedTemplate: ITemplate;
+  templates: ITemplate[];
+  data: IData;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -79,6 +100,14 @@ export class DataService {
     functionFields: [],
   };
 
+  private selectedTemplate: ITemplate = {
+    transactionSummary: '',
+    unitCode: '',
+    moduleName: '',
+    referenceNumber: '',
+    eventNumber: 0,
+    customerId: '',
+  };
   private data: IData = {
     trxType: 'Document CREDIT',
     trxNo: 'LC-00000001',
@@ -106,13 +135,21 @@ export class DataService {
     },
   };
 
-  private dataSource = new BehaviorSubject<IData>(this.data);
+  private navigateData: INavigateData = {
+    selectedFunction: this.reqFunction,
+    selectedTemplate: this.selectedTemplate,
+    templates: [],
+    data: this.data,
+  };
+
+  private dataSource = new BehaviorSubject<INavigateData>(this.navigateData);
   currentData = this.dataSource.asObservable();
 
   constructor(private http: HttpClient) {}
 
-  changedData(data: IData) {
-    this.dataSource.next(data);
+  changedData(data: INavigateData) {
+    this.navigateData = data;
+    this.dataSource.next(this.navigateData);
   }
 
   updateField(field: string, value: any) {

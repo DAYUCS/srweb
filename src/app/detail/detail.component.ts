@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { DataService, IData } from '../data.service';
+import { DataService, INavigateData } from '../data.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -8,13 +8,13 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./detail.component.scss'],
 })
 export class DetailComponent implements OnInit, OnDestroy {
-  trxData!: IData;
+  navigateData!: INavigateData;
   subscription!: Subscription;
 
-  constructor(private data: DataService) {}
+  constructor(private dataService: DataService) {}
   ngOnInit() {
-    this.subscription = this.data.currentData.subscribe((data) => {
-      this.trxData = data;
+    this.subscription = this.dataService.currentData.subscribe((data) => {
+      this.navigateData = data;
     });
   }
   ngOnDestroy() {
@@ -22,6 +22,6 @@ export class DetailComponent implements OnInit, OnDestroy {
   }
 
   updateDataField(fieldName: string, fieldValue: any) {
-    this.data.updateField(fieldName, fieldValue);
+    this.dataService.updateField(fieldName, fieldValue);
   }
 }

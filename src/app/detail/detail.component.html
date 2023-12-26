@@ -7,37 +7,37 @@
       <form clrForm clrLayout="horizontal">
         <clr-input-container>
           <label>Transaction Type</label>
-          <input clrInput type="text" [(ngModel)]="trxData.trxType" name="trxType" disabled="true" />
+          <input clrInput type="text" [(ngModel)]="navigateData.data.trxType" name="trxType" disabled="true" />
         </clr-input-container>
         <clr-input-container>
           <label>LC No.</label>
-          <input clrInput type="text" [(ngModel)]="trxData.trxNo" name="trxNo" disabled="true" />
+          <input clrInput type="text" [(ngModel)]="navigateData.data.trxNo" name="trxNo" disabled="true" />
         </clr-input-container>
         <clr-input-container>
           <label>Applicant Bank</label>
-          <input clrInput type="text" [(ngModel)]="trxData.lcData.applicantBank"
-            (input)="updateDataField('trxData.lcData.applicantBank', trxData.lcData.applicantBank)" name="applicantBank"
+          <input clrInput type="text" [(ngModel)]="navigateData.data.lcData.applicantBank"
+            (input)="updateDataField('navigateData.data.lcData.applicantBank', navigateData.data.lcData.applicantBank)" name="applicantBank"
             required="true" />
           <clr-control-error *clrIfError="'required'">This is a required field</clr-control-error>
         </clr-input-container>
         <clr-input-container>
           <label>Applicant</label>
-          <input clrInput type="text" [(ngModel)]="trxData.lcData.applicant"
-            (input)="updateDataField('trxData.lcData.applicant', trxData.lcData.applicant)" name="applicant"
+          <input clrInput type="text" [(ngModel)]="navigateData.data.lcData.applicant"
+            (input)="updateDataField('navigateData.data.lcData.applicant', navigateData.data.lcData.applicant)" name="applicant"
             required="true" />
           <clr-control-error *clrIfError="'required'">This is a required field</clr-control-error>
         </clr-input-container>
         <clr-input-container>
           <label>Beneficiary Bank</label>
-          <input clrInput type="text" [(ngModel)]="trxData.lcData.beneficiaryBank"
-            (input)="updateDataField('trxData.lcData.beneficiaryBank', trxData.lcData.beneficiaryBank)"
+          <input clrInput type="text" [(ngModel)]="navigateData.data.lcData.beneficiaryBank"
+            (input)="updateDataField('navigateData.data.lcData.beneficiaryBank', navigateData.data.lcData.beneficiaryBank)"
             name="beneficiaryBank" required="true" />
           <clr-control-error *clrIfError="'required'">This is a required field</clr-control-error>
         </clr-input-container>
         <clr-input-container>
           <label>Beneficiary</label>
-          <input clrInput type="text" [(ngModel)]="trxData.lcData.beneficiary"
-            (input)="updateDataField('trxData.lcData.beneficiary', trxData.lcData.beneficiary)" name="beneficiary"
+          <input clrInput type="text" [(ngModel)]="navigateData.data.lcData.beneficiary"
+            (input)="updateDataField('navigateData.data.lcData.beneficiary', navigateData.data.lcData.beneficiary)" name="beneficiary"
             required="true" />
           <clr-control-error *clrIfError="'required'">This is a required field</clr-control-error>
         </clr-input-container>
@@ -48,8 +48,8 @@
       <form clrForm clrLayout="horizontal">
         <clr-select-container>
           <label>Form of Documentary Credit</label>
-          <select clrSelect name="formOfDocumentaryCredit" [(ngModel)]="trxData.lcData.formOfDocumentaryCredit.form"
-            (input)="updateDataField('trxData.lcData.formOfDocumentaryCredit.form', trxData.lcData.formOfDocumentaryCredit.form)"
+          <select clrSelect name="formOfDocumentaryCredit" [(ngModel)]="navigateData.data.lcData.formOfDocumentaryCredit.form"
+            (input)="updateDataField('navigateData.data.lcData.formOfDocumentaryCredit.form', navigateData.data.lcData.formOfDocumentaryCredit.form)"
             required="true">
             <option value="IRREVOCABLE">IRREVOCABLE</option>
             <option value="IRREVOCABLE TRANSFERABLE">IRREVOCABLE TRANSFERABLE</option>
@@ -57,27 +57,27 @@
         </clr-select-container>
         <clr-date-container>
           <label>Issue Date</label>
-          <input clrDate type="date" [(ngModel)]="trxData.lcData.dateOfIssue"
-            (input)="updateDataField('trxData.lcData.dateOfIssue', trxData.lcData.dateOfIssue)" name="issueDate"
+          <input clrDate type="date" [(ngModel)]="navigateData.data.lcData.dateOfIssue"
+            (input)="updateDataField('navigateData.data.lcData.dateOfIssue', navigateData.data.lcData.dateOfIssue)" name="issueDate"
             required="true" />
         </clr-date-container>
         <clr-input-container>
           <label>Applicable Rules</label>
-          <input clrInput type="text" [(ngModel)]="trxData.lcData.applicableRules"
-            (input)="updateDataField('trxData.lcData.applicableRules', trxData.lcData.applicableRules)"
+          <input clrInput type="text" [(ngModel)]="navigateData.data.lcData.applicableRules"
+            (input)="updateDataField('navigateData.data.lcData.applicableRules', navigateData.data.lcData.applicableRules)"
             name="applicableRules" required="true" />
           <clr-control-error *clrIfError="'required'">This is a required field</clr-control-error>
         </clr-input-container>
         <clr-date-container>
           <label>Expiry Date</label>
-          <input clrDate type="date" [(ngModel)]="trxData.lcData.expiryDate"
-            (input)="updateDataField('trxData.lcData.expiryDate', trxData.lcData.expiryDate)" name="expiryDate"
+          <input clrDate type="date" [(ngModel)]="navigateData.data.lcData.expiryDate"
+            (input)="updateDataField('navigateData.data.lcData.expiryDate', navigateData.data.lcData.expiryDate)" name="expiryDate"
             required="true" />
         </clr-date-container>
         <clr-input-container>
           <label>Expiry Place</label>
-          <input clrInput type="text" [(ngModel)]="trxData.lcData.expiryPlace"
-            (input)="updateDataField('trxData.lcData.expiryPlace', trxData.lcData.expiryPlace)" name="expiryPlace"
+          <input clrInput type="text" [(ngModel)]="navigateData.data.lcData.expiryPlace"
+            (input)="updateDataField('navigateData.data.lcData.expiryPlace', navigateData.data.lcData.expiryPlace)" name="expiryPlace"
             required="true" />
           <clr-control-error *clrIfError="'required'">This is a required field</clr-control-error>
         </clr-input-container>
@@ -88,8 +88,8 @@
       <form clrForm clrLayout="horizontal">
         <clr-select-container>
           <label>Currency</label>
-          <select clrSelect name="currencyCode" [(ngModel)]="trxData.lcData.currencyCode"
-            (input)="updateDataField('trxData.lcData.currencyCode', trxData.lcData.currencyCode)" required="true">
+          <select clrSelect name="currencyCode" [(ngModel)]="navigateData.data.lcData.currencyCode"
+            (input)="updateDataField('navigateData.data.lcData.currencyCode', navigateData.data.lcData.currencyCode)" required="true">
             <option value="USD">USD</option>
             <option value="EUR">EUR</option>
             <option value="INR">INR</option>
@@ -108,32 +108,32 @@
         </clr-select-container>
         <clr-input-container>
           <label>Amount</label>
-          <input clrInput type="number" [(ngModel)]="trxData.lcData.amount"
-            (input)="updateDataField('trxData.lcData.amount', trxData.lcData.amount)" name="amount" required="true" />
+          <input clrInput type="number" [(ngModel)]="navigateData.data.lcData.amount"
+            (input)="updateDataField('navigateData.data.lcData.amount', navigateData.data.lcData.amount)" name="amount" required="true" />
           <clr-control-error *clrIfError="'required'">This is a required field</clr-control-error>
         </clr-input-container>
         <clr-input-container>
           <label>Credit Amount Tolerance +</label>
-          <input clrInput type="number" [(ngModel)]="trxData.lcData.percentageCreditAmountTolerancePlus"
-            (input)="updateDataField('trxData.lcData.percentageCreditAmountTolerancePlus', trxData.lcData.percentageCreditAmountTolerancePlus)"
+          <input clrInput type="number" [(ngModel)]="navigateData.data.lcData.percentageCreditAmountTolerancePlus"
+            (input)="updateDataField('navigateData.data.lcData.percentageCreditAmountTolerancePlus', navigateData.data.lcData.percentageCreditAmountTolerancePlus)"
             name="percentageCreditAmountTolerancePlus" required="true" />
         </clr-input-container>
         <clr-input-container>
           <label>Credit Amount Tolerance -</label>
-          <input clrInput type="number" [(ngModel)]="trxData.lcData.percentageCreditAmountToleranceMinus"
-            (input)="updateDataField('trxData.lcData.percentageCreditAmountToleranceMinus', trxData.lcData.percentageCreditAmountToleranceMinus)"
+          <input clrInput type="number" [(ngModel)]="navigateData.data.lcData.percentageCreditAmountToleranceMinus"
+            (input)="updateDataField('navigateData.data.lcData.percentageCreditAmountToleranceMinus', navigateData.data.lcData.percentageCreditAmountToleranceMinus)"
             name="percentageCreditAmountToleranceMinus" required="true" />
         </clr-input-container>
         <clr-textarea-container>
           <label>Additional Amounts Covered</label>
-          <textarea clrTextarea [(ngModel)]="trxData.lcData.additionalAmountsCovered"
-            (input)="updateDataField('trxData.lcData.additionalAmountsCovered', trxData.lcData.additionalAmountsCovered)"
+          <textarea clrTextarea [(ngModel)]="navigateData.data.lcData.additionalAmountsCovered"
+            (input)="updateDataField('navigateData.data.lcData.additionalAmountsCovered', navigateData.data.lcData.additionalAmountsCovered)"
             name="additionalAmountsCovered" required="true"></textarea>
         </clr-textarea-container>
         <clr-select-container>
           <label>Available With...By...</label>
-          <select clrSelect name="availableWithByCode" [(ngModel)]="trxData.lcData.availableWithByCode.code"
-            (input)="updateDataField('trxData.lcData.availableWithByCode.code', trxData.lcData.availableWithByCode.code)"
+          <select clrSelect name="availableWithByCode" [(ngModel)]="navigateData.data.lcData.availableWithByCode.code"
+            (input)="updateDataField('navigateData.data.lcData.availableWithByCode.code', navigateData.data.lcData.availableWithByCode.code)"
             required="true">
             <option value="BY ACCEPTANCE">BY ACCEPTANCE</option>
             <option value="BY DEF PAYMENT">BY DEF PAYMENT</option>
@@ -144,8 +144,8 @@
         </clr-select-container>
         <clr-textarea-container>
           <label>Drafts at...</label>
-          <textarea clrTextarea [(ngModel)]="trxData.lcData.draftsAt"
-            (input)="updateDataField('trxData.lcData.draftsAt', trxData.lcData.draftsAt)" name="draftsAt"
+          <textarea clrTextarea [(ngModel)]="navigateData.data.lcData.draftsAt"
+            (input)="updateDataField('navigateData.data.lcData.draftsAt', navigateData.data.lcData.draftsAt)" name="draftsAt"
             required="true"></textarea>
         </clr-textarea-container>
       </form>
