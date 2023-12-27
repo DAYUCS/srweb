@@ -1,11 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  DataService,
-  IFunction,
-  INavigateData,
-  ITemplate,
-} from '../data.service';
+import { Component, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { DataService, INavigateData } from '../data.service';
 import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-template',
@@ -13,19 +9,38 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./template.component.scss'],
 })
 export class TemplateComponent implements OnInit, OnDestroy {
+  userCommand!: string;
   parentName: string = 'template';
   navigateData!: INavigateData;
-  reqFunction!: IFunction;
   subscription!: Subscription;
 
   ngOnInit() {
-    this.subscription = this.dataService.currentData.subscribe((data) => {
-      this.navigateData = data;
+    this.route.params.subscribe((params) => {
+      this.userCommand = params['userCommand'];
+      console.log(this.userCommand);
+      this.dataService
+        .callOpenAITemplates(this.userCommand)
+        .subscribe((data) => {
+          this.navigateData.templates = data.map((t) => t.payload);
+          this.dataService.changedData(this.navigateData);
+        });
+    });
+
+    this.subscription = this.dataService.currentData.subscribe((nvData) => {
+      this.navigateData = nvData;
+      console.log(this.navigateData);
     });
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 
-  constructor(private dataService: DataService) {}
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('Template: ngOnChanges', changes);
+  }
+
+  constructor(
+    private dataService: DataService,
+    private route: ActivatedRoute
+  ) {}
 }

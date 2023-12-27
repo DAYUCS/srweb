@@ -17,7 +17,7 @@ import { TemplateComponent } from './template/template.component';
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'trx', component: TrxComponent },
-  { path: 'template', component: TemplateComponent },
+  { path: 'template/:userCommand', component: TemplateComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
 ]
 @NgModule({

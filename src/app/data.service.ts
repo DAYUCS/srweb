@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 export interface IData {
   trxType: string;
@@ -60,11 +60,6 @@ export interface IFunction {
   functionFields: FunctionField[];
 }
 
-export interface IFunctionResponse {
-  success: boolean;
-  data: IFunction;
-}
-
 export interface ITemplate {
   transactionSummary: string;
   unitCode: string;
@@ -74,9 +69,13 @@ export interface ITemplate {
   customerId: string;
 }
 
-export interface ITemplateResponse {
-  success: boolean;
-  data: ITemplate;
+export interface ITemplateVector {
+  id: string;
+  version: number;
+  score: number;
+  payload: ITemplate;
+  vector: string;
+  shard_key: string;
 }
 
 export interface INavigateData {
@@ -92,7 +91,7 @@ export interface INavigateData {
 export class DataService {
   baseUrl = 'http://10.39.101.186:8000';
 
-  private reqFunction: IFunction = {
+  private selectedFunction: IFunction = {
     functionName: '',
     functionId: '',
     functionModule: '',
@@ -108,6 +107,7 @@ export class DataService {
     eventNumber: 0,
     customerId: '',
   };
+
   private data: IData = {
     trxType: 'Document CREDIT',
     trxNo: 'LC-00000001',
@@ -136,7 +136,7 @@ export class DataService {
   };
 
   private navigateData: INavigateData = {
-    selectedFunction: this.reqFunction,
+    selectedFunction: this.selectedFunction,
     selectedTemplate: this.selectedTemplate,
     templates: [],
     data: this.data,
@@ -147,8 +147,8 @@ export class DataService {
 
   constructor(private http: HttpClient) {}
 
-  changedData(data: INavigateData) {
-    this.navigateData = data;
+  changedData(nvData: INavigateData) {
+    this.navigateData = nvData;
     this.dataSource.next(this.navigateData);
   }
 
@@ -170,30 +170,32 @@ export class DataService {
       .subscribe((result) => {
         console.log(result.data);
         if (result.success) {
-          data.lcData = result.data;
+          this.navigateData.data.lcData = result.data;
+          this.dataSource.next(this.navigateData);
         }
       });
 
-    return data;
+    return this.navigateData.data;
   }
 
-  public callOpenAIFunction(recognizedText: string): IFunction {
+  public callOpenAIFunction(recognizedText: string): Observable<IFunction> {
     const apiUrl = this.baseUrl + '/function/find';
     const userCommand = `"` + recognizedText + `"`;
     const fullUrl = `${apiUrl}?userCommand=${encodeURIComponent(userCommand)}`;
-    const request = Object.assign({ command: recognizedText });
-    this.http.get<IFunctionResponse>(fullUrl).subscribe(
-      (resp) => {
-        // Handle the response data here
-        console.log(resp);
-        this.reqFunction = resp.data;
-      },
-      (error) => {
-        // Handle errors here
-        console.error(error);
-      }
-    );
+    return this.http.get<IFunction>(fullUrl);
+  }
 
-    return this.reqFunction;
+  public callOpenAITemplates(recognizedText: string): Observable<ITemplateVector[]> {
+    const apiUrl = this.baseUrl + '/template/search';
+    const userCommand = `"` + recognizedText + `"`;
+    const unitCode = "HED0001";
+    const moduleName = this.navigateData.selectedFunction.functionModule;
+    const customerId = "CUST-00000001";
+    const fullUrl = `${apiUrl}?userCommand=${encodeURIComponent(
+      userCommand
+    )}&unitCode=${encodeURIComponent(unitCode)}&moduleName=${encodeURIComponent(
+      moduleName
+    )}&customerId=${encodeURIComponent(customerId)}`;
+    return this.http.get<ITemplateVector[]>(fullUrl);
   }
 }

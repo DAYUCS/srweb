@@ -5,7 +5,7 @@ import {
   Input,
   SimpleChanges,
 } from '@angular/core';
-import { DataService, IFunction, INavigateData } from '../data.service';
+import { DataService, INavigateData } from '../data.service';
 import { Subscription } from 'rxjs';
 import '@cds/core/icon/register.js';
 import {
@@ -13,6 +13,7 @@ import {
   microphoneIcon,
   microphoneMuteIcon,
 } from '@cds/core/icon';
+import { Router } from '@angular/router';
 
 ClarityIcons.addIcons(microphoneIcon, microphoneMuteIcon);
 
@@ -26,7 +27,6 @@ declare var SpeechRecognition: any;
 })
 export class FooterComponent implements OnInit, OnDestroy {
   navigateData!: INavigateData;
-  reqFunction!: IFunction;
   subscription!: Subscription;
   @Input() recognizedText: string = '';
   @Input() parentName: string = '';
@@ -36,8 +36,8 @@ export class FooterComponent implements OnInit, OnDestroy {
   voice: SpeechSynthesisVoice;
 
   ngOnInit() {
-    this.subscription = this.dataService.currentData.subscribe((data) => {
-      this.navigateData = data;
+    this.subscription = this.dataService.currentData.subscribe((nvData) => {
+      this.navigateData = nvData;
     });
   }
   ngOnDestroy() {
@@ -45,10 +45,10 @@ export class FooterComponent implements OnInit, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
+    console.log('Footer: ngOnChanges', changes);
   }
 
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService, private router: Router) {
     this.recognition = new webkitSpeechRecognition() || new SpeechRecognition();
     this.recognition.continuous = true;
     this.recognition.interimResults = true;
@@ -83,8 +83,11 @@ export class FooterComponent implements OnInit, OnDestroy {
     if (this.parentName == 'trx') {
       // find out new fields values
       this.playVoice('Let me think about it...');
-      this.navigateData.data = this.dataService.callOpenAITrx(this.navigateData.data, this.recognizedText);
-      this.dataService.changedData(this.navigateData);
+      this.navigateData.data = this.dataService.callOpenAITrx(
+        this.navigateData.data,
+        this.recognizedText
+      );
+      //this.dataService.changedData(this.navigateData);
       this.recognizedText = '';
       console.log(this.navigateData.data);
       this.playVoice(
@@ -92,15 +95,27 @@ export class FooterComponent implements OnInit, OnDestroy {
       );
     } else if (this.parentName == 'home') {
       // identify function id and fields values
-      this.playVoice('OK, please wait...');
-      this.reqFunction = this.dataService.callOpenAIFunction(this.recognizedText);
-      this.navigateData.selectedFunction = this.reqFunction;
-      this.dataService.changedData(this.navigateData);
-      this.recognizedText = '';
-      console.log(this.navigateData.selectedFunction);
-      this.playVoice(
-        'Please wait a moment, let me find out transaction templates...'
-      );
+      this.playVoice('OK, wait a moment please...');
+      this.dataService.callOpenAIFunction(this.recognizedText).subscribe({
+        next: (resp) => {
+          // Handle the response data here
+          console.log(resp);
+          this.navigateData.selectedFunction = resp;
+          this.dataService.changedData(this.navigateData);
+          console.log(this.navigateData.selectedFunction);
+          this.playVoice(
+            'I will find some transaction templates for the function of ' +
+              this.navigateData.selectedFunction.functionName
+          );
+          this.router.navigate(['template', this.recognizedText]);
+          this.recognizedText = '';
+        },
+        error: (error) => {
+          // Handle errors here
+          this.playVoice('Sorry, I can not understand you. Please try again.');
+          console.error(error);
+        },
+      });
     }
   }
 

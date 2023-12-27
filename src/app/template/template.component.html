@@ -1,16 +1,26 @@
 <app-header></app-header>
 <div class="content-container">
     <div class="content-area">
-        <clr-datagrid [(clrDgSingleSelected)]="navigateData.selectedTemplate">
-            <!-- ... -->
+        <clr-datagrid [(clrDgSingleSelected)]="navigateData.selectedTemplate" [clrDgRowSelection]="true">
+            <clr-dg-column>Trx. Summary</clr-dg-column>
+            <clr-dg-column>Ref No.</clr-dg-column>
+            <clr-dg-column>Event No.</clr-dg-column>
             <clr-dg-row *clrDgItems="let template of navigateData.templates" [clrDgItem]="template">
-                <!-- ... -->
+                <clr-dg-cell>{{ template.transactionSummary }}</clr-dg-cell>
+                <clr-dg-cell>{{ template.referenceNumber }}</clr-dg-cell>
+                <clr-dg-cell>{{ template.eventNumber }}</clr-dg-cell>
             </clr-dg-row>
-            <!-- ... -->
+            <clr-dg-footer>{{ navigateData.templates.length }} records found</clr-dg-footer>
         </clr-datagrid>
 
-        Selected template:
-        <span *ngIf="navigateData.selectedTemplate">{{ navigateData.selectedTemplate.referenceNumber }}</span>
+        <div>
+            Selected template:
+            <span *ngIf="navigateData.selectedTemplate">{{ navigateData.selectedTemplate.referenceNumber }}</span>
+        </div>
+        <div>
+            Selected function:
+            <span *ngIf="navigateData.selectedFunction">{{ navigateData.selectedFunction.functionName }}</span>
+        </div>
     </div>
 </div>
 <app-footer [parentName]="parentName"></app-footer>
