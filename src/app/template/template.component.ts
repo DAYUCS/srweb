@@ -21,7 +21,9 @@ export class TemplateComponent implements OnInit, OnDestroy {
       this.dataService
         .callOpenAITemplates(this.userCommand)
         .subscribe((data) => {
-          this.navigateData.templates = data.map((t) => t.payload);
+          this.navigateData.templates = data
+            .sort((t1, t2) => t2.score - t1.score)
+            .map((t) => t.payload);
           this.dataService.changedData(this.navigateData);
         });
     });
