@@ -15,6 +15,11 @@ export class TemplateComponent implements OnInit, OnDestroy {
   subscription!: Subscription;
 
   ngOnInit() {
+    this.subscription = this.dataService.currentData.subscribe((nvData) => {
+      this.navigateData = nvData;
+      console.log(this.navigateData);
+    });
+
     this.route.params.subscribe((params) => {
       this.userCommand = params['userCommand'];
       console.log(this.userCommand);
@@ -24,15 +29,12 @@ export class TemplateComponent implements OnInit, OnDestroy {
           this.navigateData.templates = data
             .sort((t1, t2) => t2.score - t1.score)
             .map((t) => t.payload);
+          this.navigateData.selectedTemplate = this.navigateData.templates[0];
           this.dataService.changedData(this.navigateData);
         });
     });
-
-    this.subscription = this.dataService.currentData.subscribe((nvData) => {
-      this.navigateData = nvData;
-      console.log(this.navigateData);
-    });
   }
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
