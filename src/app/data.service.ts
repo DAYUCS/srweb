@@ -78,6 +78,11 @@ export interface ITemplateVector {
   shard_key: string;
 }
 
+export interface IIntent {
+  intent: string;
+  selectedTemplate: ITemplate;
+}
+
 export interface INavigateData {
   selectedFunction: IFunction;
   selectedTemplate: ITemplate;
@@ -197,5 +202,12 @@ export class DataService {
       moduleName
     )}&customerId=${encodeURIComponent(customerId)}`;
     return this.http.get<ITemplateVector[]>(fullUrl);
+  }
+
+  public callOpenAIIntent(recognizedText: string, templates: ITemplate[]): Observable<IIntent> {
+    const apiUrl = this.baseUrl + '/template/select';
+    const userCommand = `"` + recognizedText + `"`;
+    const fullUrl = `${apiUrl}?userCommand=${encodeURIComponent(userCommand)}`;
+    return this.http.post<IIntent>(fullUrl, templates);
   }
 }

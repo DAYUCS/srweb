@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { DataService, INavigateData } from '../data.service';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
@@ -45,6 +51,7 @@ export class TemplateComponent implements OnInit, OnDestroy {
 
   constructor(
     private dataService: DataService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private ref: ChangeDetectorRef
   ) {}
 }
