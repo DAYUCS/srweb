@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { DataService, INavigateData } from '../data.service';
-import { Subscription } from 'rxjs';
+import { DataService, INavigateData, ITemplateVector } from '../data.service';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs/internal/Subscription';
 
 @Component({
   selector: 'app-template',
@@ -15,17 +15,19 @@ export class TemplateComponent implements OnInit, OnDestroy {
   subscription!: Subscription;
 
   ngOnInit() {
-    this.subscription = this.dataService.currentData.subscribe((nvData) => {
-      this.navigateData = nvData;
-      console.log(this.navigateData);
-    });
+    this.subscription = this.dataService.currentData.subscribe(
+      (nvData: INavigateData) => {
+        this.navigateData = nvData;
+        console.log(this.navigateData);
+      }
+    );
 
-    this.route.params.subscribe((params) => {
+    this.route.params.subscribe((params: { [x: string]: string }) => {
       this.userCommand = params['userCommand'];
       console.log(this.userCommand);
       this.dataService
         .callOpenAITemplates(this.userCommand)
-        .subscribe((data) => {
+        .subscribe((data: ITemplateVector[]) => {
           this.navigateData.templates = data
             .sort((t1, t2) => t2.score - t1.score)
             .map((t) => t.payload);

@@ -5,8 +5,12 @@ import {
   Input,
   SimpleChanges,
 } from '@angular/core';
-import { DataService, INavigateData } from '../data.service';
-import { Subscription } from 'rxjs';
+import {
+  DataService,
+  IFunction,
+  IUserIntent,
+  INavigateData,
+} from '../data.service';
 import '@cds/core/icon/register.js';
 import {
   ClarityIcons,
@@ -14,6 +18,7 @@ import {
   microphoneMuteIcon,
 } from '@cds/core/icon';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs/internal/Subscription';
 
 ClarityIcons.addIcons(microphoneIcon, microphoneMuteIcon);
 
@@ -36,9 +41,11 @@ export class FooterComponent implements OnInit, OnDestroy {
   voice: SpeechSynthesisVoice;
 
   ngOnInit() {
-    this.subscription = this.dataService.currentData.subscribe((nvData) => {
-      this.navigateData = nvData;
-    });
+    this.subscription = this.dataService.currentData.subscribe(
+      (nvData: INavigateData) => {
+        this.navigateData = nvData;
+      }
+    );
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();
@@ -97,7 +104,7 @@ export class FooterComponent implements OnInit, OnDestroy {
       // identify function id and fields values
       this.playVoice('OK, wait a moment please...');
       this.dataService.callOpenAIFunction(this.recognizedText).subscribe({
-        next: (resp) => {
+        next: (resp: IFunction) => {
           // Handle the response data here
           console.log(resp);
           this.navigateData.selectedFunction = resp;
@@ -110,7 +117,7 @@ export class FooterComponent implements OnInit, OnDestroy {
           this.router.navigate(['template', this.recognizedText]);
           this.recognizedText = '';
         },
-        error: (error) => {
+        error: (error: any) => {
           // Handle errors here
           this.playVoice('Sorry, I can not understand you. Please try again.');
           console.error(error);
@@ -122,10 +129,10 @@ export class FooterComponent implements OnInit, OnDestroy {
       this.dataService
         .callOpenAIIntent(this.recognizedText, this.navigateData.templates)
         .subscribe({
-          next: (resp) => {
+          next: (resp: IUserIntent) => {
             // Handle the response data here
             console.log(resp);
-            console.log('the template selected is ' + resp.templateNo);
+            console.log('the template selected is ' + resp.selectedTemplate);
             console.log('the intent is ' + resp.intent);
             this.playVoice('OK, got it.');
             this.recognizedText = '';
@@ -136,10 +143,10 @@ export class FooterComponent implements OnInit, OnDestroy {
             ) {
               console.log(
                 'update selectedTemplate with ' +
-                  this.navigateData.templates[resp.templateNo].referenceNumber
+                  this.navigateData.templates[resp.selectedTemplate].referenceNumber
               );
               this.navigateData.selectedTemplate =
-                this.navigateData.templates[resp.templateNo];
+                this.navigateData.templates[resp.selectedTemplate];
               this.dataService.changedData(this.navigateData);
             }
             if (resp.intent == 'CANCEL') {
@@ -149,7 +156,7 @@ export class FooterComponent implements OnInit, OnDestroy {
               this.router.navigate(['trx']);
             }
           },
-          error: (error) => {
+          error: (error: any) => {
             // Handle errors here
             this.playVoice(
               'Sorry, I can not understand you. Please try again.'

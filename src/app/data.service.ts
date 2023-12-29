@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { Observable } from 'rxjs/internal/Observable';
+
 
 export interface IData {
   trxType: string;
@@ -78,9 +80,9 @@ export interface ITemplateVector {
   shard_key: string;
 }
 
-export interface IIntent {
+export interface IUserIntent {
   intent: string;
-  templateNo: number;
+  selectedTemplate: number;
 }
 
 export interface INavigateData {
@@ -204,10 +206,10 @@ export class DataService {
     return this.http.get<ITemplateVector[]>(fullUrl);
   }
 
-  public callOpenAIIntent(recognizedText: string, templates: ITemplate[]): Observable<IIntent> {
+  public callOpenAIIntent(recognizedText: string, templates: ITemplate[]): Observable<IUserIntent> {
     const apiUrl = this.baseUrl + '/template/select';
     const userCommand = `"` + recognizedText + `"`;
     const fullUrl = `${apiUrl}?userCommand=${encodeURIComponent(userCommand)}`;
-    return this.http.post<IIntent>(fullUrl, templates);
+    return this.http.post<IUserIntent>(fullUrl, templates);
   }
 }
