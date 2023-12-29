@@ -22,8 +22,8 @@
         </clr-input-container>
         <clr-input-container>
           <label>Applicant</label>
-          <input clrInput type="text" [(ngModel)]="navigateData.data.lcData.applicant"
-            (input)="updateDataField('navigateData.data.lcData.applicant', navigateData.data.lcData.applicant)" name="applicant"
+          <input clrInput type="text" [(ngModel)]="navigateData.data.lcData.APPLICANT"
+            (input)="updateDataField('navigateData.data.lcData.APPLICANT', navigateData.data.lcData.APPLICANT)" name="applicant"
             required="true" />
           <clr-control-error *clrIfError="'required'">This is a required field</clr-control-error>
         </clr-input-container>
@@ -48,8 +48,8 @@
       <form clrForm clrLayout="horizontal">
         <clr-select-container>
           <label>Form of Documentary Credit</label>
-          <select clrSelect name="formOfDocumentaryCredit" [(ngModel)]="navigateData.data.lcData.formOfDocumentaryCredit.form"
-            (input)="updateDataField('navigateData.data.lcData.formOfDocumentaryCredit.form', navigateData.data.lcData.formOfDocumentaryCredit.form)"
+          <select clrSelect name="formOfDocumentaryCredit" [(ngModel)]="navigateData.data.lcData.FORM_OF_LC.form"
+            (input)="updateDataField('navigateData.data.lcData.FORM_OF_LC.form', navigateData.data.lcData.FORM_OF_LC.form)"
             required="true">
             <option value="IRREVOCABLE">IRREVOCABLE</option>
             <option value="IRREVOCABLE TRANSFERABLE">IRREVOCABLE TRANSFERABLE</option>
@@ -63,21 +63,21 @@
         </clr-date-container>
         <clr-input-container>
           <label>Applicable Rules</label>
-          <input clrInput type="text" [(ngModel)]="navigateData.data.lcData.applicableRules"
-            (input)="updateDataField('navigateData.data.lcData.applicableRules', navigateData.data.lcData.applicableRules)"
+          <input clrInput type="text" [(ngModel)]="navigateData.data.lcData.APLB_RULE"
+            (input)="updateDataField('navigateData.data.lcData.APLB_RULE', navigateData.data.lcData.APLB_RULE)"
             name="applicableRules" required="true" />
           <clr-control-error *clrIfError="'required'">This is a required field</clr-control-error>
         </clr-input-container>
         <clr-date-container>
           <label>Expiry Date</label>
-          <input clrDate type="date" [(ngModel)]="navigateData.data.lcData.expiryDate"
-            (input)="updateDataField('navigateData.data.lcData.expiryDate', navigateData.data.lcData.expiryDate)" name="expiryDate"
+          <input clrDate type="date" [(ngModel)]="navigateData.data.lcData.EXPIRY_DT"
+            (input)="updateDataField('navigateData.data.lcData.EXPIRY_DT', navigateData.data.lcData.EXPIRY_DT)" name="expiryDate"
             required="true" />
         </clr-date-container>
         <clr-input-container>
           <label>Expiry Place</label>
-          <input clrInput type="text" [(ngModel)]="navigateData.data.lcData.expiryPlace"
-            (input)="updateDataField('navigateData.data.lcData.expiryPlace', navigateData.data.lcData.expiryPlace)" name="expiryPlace"
+          <input clrInput type="text" [(ngModel)]="navigateData.data.lcData.EXPIRY_PLC"
+            (input)="updateDataField('navigateData.data.lcData.EXPIRY_PLC', navigateData.data.lcData.EXPIRY_PLC)" name="expiryPlace"
             required="true" />
           <clr-control-error *clrIfError="'required'">This is a required field</clr-control-error>
         </clr-input-container>
@@ -88,8 +88,8 @@
       <form clrForm clrLayout="horizontal">
         <clr-select-container>
           <label>Currency</label>
-          <select clrSelect name="currencyCode" [(ngModel)]="navigateData.data.lcData.currencyCode"
-            (input)="updateDataField('navigateData.data.lcData.currencyCode', navigateData.data.lcData.currencyCode)" required="true">
+          <select clrSelect name="currencyCode" [(ngModel)]="navigateData.data.lcData.LC_CCY"
+            (input)="updateDataField('navigateData.data.lcData.LC_CCY', navigateData.data.lcData.LC_CCY)" required="true">
             <option value="USD">USD</option>
             <option value="EUR">EUR</option>
             <option value="INR">INR</option>
@@ -108,8 +108,8 @@
         </clr-select-container>
         <clr-input-container>
           <label>Amount</label>
-          <input clrInput type="number" [(ngModel)]="navigateData.data.lcData.amount"
-            (input)="updateDataField('navigateData.data.lcData.amount', navigateData.data.lcData.amount)" name="amount" required="true" />
+          <input clrInput type="number" [(ngModel)]="navigateData.data.lcData.LC_AMT"
+            (input)="updateDataField('navigateData.data.lcData.LC_AMT', navigateData.data.lcData.LC_AMT)" name="amount" required="true" />
           <clr-control-error *clrIfError="'required'">This is a required field</clr-control-error>
         </clr-input-container>
         <clr-input-container>
@@ -132,8 +132,8 @@
         </clr-textarea-container>
         <clr-select-container>
           <label>Available With...By...</label>
-          <select clrSelect name="availableWithByCode" [(ngModel)]="navigateData.data.lcData.availableWithByCode.code"
-            (input)="updateDataField('navigateData.data.lcData.availableWithByCode.code', navigateData.data.lcData.availableWithByCode.code)"
+          <select clrSelect name="availableWithByCode" [(ngModel)]="navigateData.data.lcData.AVAL_BY.code"
+            (input)="updateDataField('navigateData.data.lcData.AVAL_BY.code', navigateData.data.lcData.AVAL_BY.code)"
             required="true">
             <option value="BY ACCEPTANCE">BY ACCEPTANCE</option>
             <option value="BY DEF PAYMENT">BY DEF PAYMENT</option>
@@ -148,6 +148,13 @@
             (input)="updateDataField('navigateData.data.lcData.draftsAt', navigateData.data.lcData.draftsAt)" name="draftsAt"
             required="true"></textarea>
         </clr-textarea-container>
+        <clr-input-container>
+          <label>Advice Bank</label>
+          <input clrInput type="text" [(ngModel)]="navigateData.data.lcData.ADVICE_BANK"
+            (input)="updateDataField('navigateData.data.lcData.ADVICE_BANK', navigateData.data.lcData.ADVICE_BANK)" name="adviceBank"
+            required="true" />
+          <clr-control-error *clrIfError="'required'">This is a required field</clr-control-error>
+        </clr-input-container>
       </form>
     </div>
   </div>

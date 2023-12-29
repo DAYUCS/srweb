@@ -30,21 +30,22 @@ export interface AvailableWithByCode {
 
 export interface LCData {
   applicantBank: string;
-  applicant: string;
-  formOfDocumentaryCredit: FormOfDocumentaryCredit;
+  APPLICANT: string;
+  FORM_OF_LC: FormOfDocumentaryCredit;
   beneficiaryBank: string;
   beneficiary: string;
   dateOfIssue: Date;
-  applicableRules: string;
-  expiryDate: Date;
-  expiryPlace: string;
-  currencyCode: string;
-  amount: number;
+  APLB_RULE: string;
+  EXPIRY_DT: Date;
+  EXPIRY_PLC: string;
+  LC_CCY: string;
+  LC_AMT: number;
   percentageCreditAmountTolerancePlus: number;
   percentageCreditAmountToleranceMinus: number;
   additionalAmountsCovered: string;
-  availableWithByCode: AvailableWithByCode;
+  AVAL_BY: AvailableWithByCode;
   draftsAt: string;
+  ADVICE_BANK: string;
 }
 
 export interface FunctionField {
@@ -120,25 +121,26 @@ export class DataService {
     trxNo: 'LC-00000001',
     lcData: {
       applicantBank: 'BANK OF CHINA',
-      applicant: 'APPLICANT',
-      formOfDocumentaryCredit: {
+      APPLICANT: 'APPLICANT',
+      FORM_OF_LC: {
         form: 'IRREVOCABLE TRANSFERABLE',
       },
       beneficiaryBank: 'BANK OF INDIA',
       beneficiary: 'BENEFICIARY',
       dateOfIssue: new Date('9/29/2023'),
-      applicableRules: 'UCP 600',
-      expiryDate: new Date('12/01/2023'),
-      expiryPlace: 'Nanjing China',
-      currencyCode: 'CNY',
-      amount: 10000000000,
+      APLB_RULE: 'UCP 600',
+      EXPIRY_DT: new Date('12/01/2023'),
+      EXPIRY_PLC: 'Nanjing China',
+      LC_CCY: 'CNY',
+      LC_AMT: 10000000000,
       percentageCreditAmountTolerancePlus: 10,
       percentageCreditAmountToleranceMinus: 10,
       additionalAmountsCovered: 'ADDITIONAL AMOUNTS',
-      availableWithByCode: {
+      AVAL_BY: {
         code: 'BY ACCEPTANCE',
       },
       draftsAt: 'DRAFTS AT',
+      ADVICE_BANK: 'Bank of China',
     },
   };
 

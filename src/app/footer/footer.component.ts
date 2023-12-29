@@ -10,6 +10,7 @@ import {
   IFunction,
   IUserIntent,
   INavigateData,
+  FunctionField,
 } from '../data.service';
 import '@cds/core/icon/register.js';
 import {
@@ -126,14 +127,14 @@ export class FooterComponent implements OnInit, OnDestroy {
     } else if (this.parentName == 'template') {
       //determine user's intent
       this.playVoice('OK, wait a moment please...');
+      let theTemplates = this.navigateData.templates;
       this.dataService
-        .callOpenAIIntent(this.recognizedText, this.navigateData.templates)
+        .callOpenAIIntent(this.recognizedText, theTemplates)
         .subscribe({
           next: (resp: IUserIntent) => {
             // Handle the response data here
             console.log(resp);
-            console.log('the template selected is ' + resp.selectedTemplate);
-            console.log('the intent is ' + resp.intent);
+            console.log(this.navigateData);
             this.playVoice('OK, got it.');
             this.recognizedText = '';
             //resp.intent: SELECT_ONLY, CONTINUE, SELECT_CONTINUE or CANCEL
@@ -143,7 +144,8 @@ export class FooterComponent implements OnInit, OnDestroy {
             ) {
               console.log(
                 'update selectedTemplate with ' +
-                  this.navigateData.templates[resp.selectedTemplate].referenceNumber
+                  this.navigateData.templates[resp.selectedTemplate]
+                    .referenceNumber
               );
               this.navigateData.selectedTemplate =
                 this.navigateData.templates[resp.selectedTemplate];
@@ -153,6 +155,17 @@ export class FooterComponent implements OnInit, OnDestroy {
               this.router.navigate(['home']);
             }
             if (resp.intent == 'CONTINUE' || resp.intent == 'SELECT_CONTINUE') {
+              //Merge data
+              console.log('Navigate Data: ' + this.navigateData);
+              let pageData = this.navigateData.data.lcData;
+              let parameters =
+                this.navigateData.selectedFunction.functionFields;
+              parameters.forEach((field) => {
+                (pageData as any)[field.fieldName as string] =
+                  this.parseFieldValue(field.fieldType, field.fieldValue);
+              });
+              this.navigateData.data.lcData = pageData;
+              this.dataService.changedData(this.navigateData);
               this.router.navigate(['trx']);
             }
           },
@@ -174,5 +187,18 @@ export class FooterComponent implements OnInit, OnDestroy {
     utterance.rate = 1;
     utterance.volume = 1;
     this.synth.speak(utterance);
+  }
+
+  parseFieldValue(
+    fieldType: string,
+    fieldValue: string
+  ): string | number | Date {
+    if (fieldType === 'AMOUNT') {
+      return parseFloat(fieldValue);
+    } else if (fieldType === 'DATE') {
+      return new Date(fieldValue);
+    } else {
+      return fieldValue;
+    }
   }
 }
