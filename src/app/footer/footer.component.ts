@@ -119,34 +119,44 @@ export class FooterComponent implements OnInit, OnDestroy {
     } else if (this.parentName == 'template') {
       //determine user's intent
       this.playVoice('OK, wait a moment please...');
-      this.dataService.callOpenAIIntent(this.recognizedText, this.navigateData.templates).subscribe({
-        next: (resp) => {
-          // Handle the response data here
-          console.log(resp);
-          const intent = resp.intent;
-          const template = resp.selectedTemplate;
-          console.log('the template selected is ' + template);
-          console.log('the intent is ' + intent);
-          this.playVoice("OK, got it.");
-          this.recognizedText = '';
-          //resp.intent: SELECT_ONLY, CONTINUE, SELECT_CONTINUE or CANCEL
-          if (intent == 'SELECT_ONLY' || intent == 'SELECT_CONTINUE') {
-            this.navigateData.selectedTemplate = template;
-            this.dataService.changedData(this.navigateData);
-          };
-          if (intent == 'CANCEL') {
-            this.router.navigate(['home']);
-          };
-          if (intent == 'CONTINUE' || intent == 'SELECT_CONTINUE') {
-            this.router.navigate(['trx']);
-          };
-        },
-        error: (error) => {
-          // Handle errors here
-          this.playVoice('Sorry, I can not understand you. Please try again.');
-          console.error(error);
-        },
-      })
+      this.dataService
+        .callOpenAIIntent(this.recognizedText, this.navigateData.templates)
+        .subscribe({
+          next: (resp) => {
+            // Handle the response data here
+            console.log(resp);
+            console.log('the template selected is ' + resp.templateNo);
+            console.log('the intent is ' + resp.intent);
+            this.playVoice('OK, got it.');
+            this.recognizedText = '';
+            //resp.intent: SELECT_ONLY, CONTINUE, SELECT_CONTINUE or CANCEL
+            if (
+              resp.intent == 'SELECT_ONLY' ||
+              resp.intent == 'SELECT_CONTINUE'
+            ) {
+              console.log(
+                'update selectedTemplate with ' +
+                  this.navigateData.templates[resp.templateNo].referenceNumber
+              );
+              this.navigateData.selectedTemplate =
+                this.navigateData.templates[resp.templateNo];
+              this.dataService.changedData(this.navigateData);
+            }
+            if (resp.intent == 'CANCEL') {
+              this.router.navigate(['home']);
+            }
+            if (resp.intent == 'CONTINUE' || resp.intent == 'SELECT_CONTINUE') {
+              this.router.navigate(['trx']);
+            }
+          },
+          error: (error) => {
+            // Handle errors here
+            this.playVoice(
+              'Sorry, I can not understand you. Please try again.'
+            );
+            console.error(error);
+          },
+        });
     }
   }
 

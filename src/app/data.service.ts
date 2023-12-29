@@ -80,7 +80,7 @@ export interface ITemplateVector {
 
 export interface IIntent {
   intent: string;
-  selectedTemplate: ITemplate;
+  templateNo: number;
 }
 
 export interface INavigateData {
