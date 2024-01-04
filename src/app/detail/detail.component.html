@@ -48,8 +48,8 @@
       <form clrForm clrLayout="horizontal">
         <clr-select-container>
           <label>Form of Documentary Credit</label>
-          <select clrSelect name="formOfDocumentaryCredit" [(ngModel)]="navigateData.data.lcData.FORM_OF_LC.form"
-            (input)="updateDataField('navigateData.data.lcData.FORM_OF_LC.form', navigateData.data.lcData.FORM_OF_LC.form)"
+          <select clrSelect name="formOfDocumentaryCredit" [(ngModel)]="navigateData.data.lcData.FORM_OF_LC"
+            (input)="updateDataField('navigateData.data.lcData.FORM_OF_LC', navigateData.data.lcData.FORM_OF_LC)"
             required="true">
             <option value="IRREVOCABLE">IRREVOCABLE</option>
             <option value="IRREVOCABLE TRANSFERABLE">IRREVOCABLE TRANSFERABLE</option>
@@ -132,8 +132,8 @@
         </clr-textarea-container>
         <clr-select-container>
           <label>Available With...By...</label>
-          <select clrSelect name="availableWithByCode" [(ngModel)]="navigateData.data.lcData.AVAL_BY.code"
-            (input)="updateDataField('navigateData.data.lcData.AVAL_BY.code', navigateData.data.lcData.AVAL_BY.code)"
+          <select clrSelect name="availableWithByCode" [(ngModel)]="navigateData.data.lcData.AVAL_BY"
+            (input)="updateDataField('navigateData.data.lcData.AVAL_BY', navigateData.data.lcData.AVAL_BY)"
             required="true">
             <option value="BY ACCEPTANCE">BY ACCEPTANCE</option>
             <option value="BY DEF PAYMENT">BY DEF PAYMENT</option>

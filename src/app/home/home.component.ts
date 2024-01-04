@@ -14,9 +14,9 @@ export class HomeComponent {
     'Register Letter of Credit',
   ];
   cardTexts: string[] = [
-    'Chinasystems Ltd. Corp. applied for a non-transferable letter of credit worth US$100,000',
-    'Microsoft China Corp. applied for a transferable letter of credit worth EUR 200,000',
-    'Chinasystems Ltd. Corp. applied for a non-transferable letter of credit worth US$100,000 advised by JPMorgan',
+    'Chinasystems Ltd. Corp. applied for a non-transferable letter of credit worth CNY 100,000',
+    'Microsoft China Corp. applied for a transferable letter of credit worth USD 200,000',
+    'Chinasystems Ltd. Corp. applied for a non-transferable letter of credit worth JPY 100,000,000 advised by BOC',
   ];
 
   tryButtonClick(index: number) {

@@ -10,7 +10,7 @@ import {
   IFunction,
   IUserIntent,
   INavigateData,
-  FunctionField,
+  IUserIntentTrx,
 } from '../data.service';
 import '@cds/core/icon/register.js';
 import {
@@ -91,16 +91,44 @@ export class FooterComponent implements OnInit, OnDestroy {
     if (this.parentName == 'trx') {
       // find out new fields values
       this.playVoice('Let me think about it...');
-      this.navigateData.data = this.dataService.callOpenAITrx(
-        this.navigateData.data,
-        this.recognizedText
-      );
-      //this.dataService.changedData(this.navigateData);
-      this.recognizedText = '';
-      console.log(this.navigateData.data);
-      this.playVoice(
-        'Please wait a moment, the new data will be displayed on the screen.'
-      );
+      this.dataService
+        .callOpenAITrx(this.navigateData, this.recognizedText)
+        .subscribe({
+          next: (resp: IUserIntentTrx) => {
+            // Handle the response data here
+            console.log(resp);
+            this.playVoice('OK, got it.');
+            this.recognizedText = '';
+            if (resp.intent == 'CHANGE' || resp.intent == 'CHANGE_CONFIRM') {
+              let json = JSON.stringify(resp.trxData);
+              let fields = JSON.parse(json);
+              console.log(fields);
+              for (let key in fields) {
+                // check if key exists in lcData
+                if (this.navigateData.data.lcData.hasOwnProperty(key)) {
+                  const fullKey = 'navigateData.data.lcData.' + key;
+                  this.navigateData.data.lcData[key] = fields[key];
+                }
+              }
+              this.dataService.changedData(this.navigateData);
+            } else if (resp.intent == 'CANCEL') {
+              this.router.navigate(['template']);
+            } else if (
+              resp.intent == 'CONFIRM' ||
+              resp.intent == 'CHANGE_CONFIRM'
+            ) {
+              //TODO submit form
+              this.router.navigate(['home']);
+            }
+          },
+          error: (error: any) => {
+            // Handle errors here
+            this.playVoice(
+              'Sorry, I can not understand you. Please try again.'
+            );
+            console.error(error);
+          },
+        });
     } else if (this.parentName == 'home') {
       // identify function id and fields values
       this.playVoice('OK, wait a moment please...');

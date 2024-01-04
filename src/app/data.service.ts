@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { Observable } from 'rxjs/internal/Observable';
 
-
 export interface IData {
   trxType: string;
   trxNo: string;
@@ -15,23 +14,11 @@ export interface IDataResponse {
   data: LCData;
 }
 
-export interface FormOfDocumentaryCredit {
-  form: 'IRREVOCABLE' | 'IRREVOCABLE TRANSFERABLE';
-}
-
-export interface AvailableWithByCode {
-  code:
-    | 'BY ACCEPTANCE'
-    | 'BY DEF PAYMENT'
-    | 'BY MIXED PYMT'
-    | 'BY NEGOTIATION'
-    | 'BY PAYMENT';
-}
-
 export interface LCData {
+  [key: string]: string | number | Date;
   applicantBank: string;
   APPLICANT: string;
-  FORM_OF_LC: FormOfDocumentaryCredit;
+  FORM_OF_LC: string;
   beneficiaryBank: string;
   beneficiary: string;
   dateOfIssue: Date;
@@ -43,7 +30,7 @@ export interface LCData {
   percentageCreditAmountTolerancePlus: number;
   percentageCreditAmountToleranceMinus: number;
   additionalAmountsCovered: string;
-  AVAL_BY: AvailableWithByCode;
+  AVAL_BY: string;
   draftsAt: string;
   ADVICE_BANK: string;
 }
@@ -86,6 +73,11 @@ export interface IUserIntent {
   selectedTemplate: number;
 }
 
+export interface IUserIntentTrx {
+  intent: string;
+  trxData: any;
+}
+
 export interface INavigateData {
   selectedFunction: IFunction;
   selectedTemplate: ITemplate;
@@ -122,9 +114,7 @@ export class DataService {
     lcData: {
       applicantBank: 'BANK OF CHINA',
       APPLICANT: 'APPLICANT',
-      FORM_OF_LC: {
-        form: 'IRREVOCABLE TRANSFERABLE',
-      },
+      FORM_OF_LC: 'IRREVOCABLE TRANSFERABLE',
       beneficiaryBank: 'BANK OF INDIA',
       beneficiary: 'BENEFICIARY',
       dateOfIssue: new Date('9/29/2023'),
@@ -136,9 +126,7 @@ export class DataService {
       percentageCreditAmountTolerancePlus: 10,
       percentageCreditAmountToleranceMinus: 10,
       additionalAmountsCovered: 'ADDITIONAL AMOUNTS',
-      AVAL_BY: {
-        code: 'BY ACCEPTANCE',
-      },
+      AVAL_BY: 'BY ACCEPTANCE',
       draftsAt: 'DRAFTS AT',
       ADVICE_BANK: 'Bank of China',
     },
@@ -168,23 +156,23 @@ export class DataService {
     console.log(newData);
   }
 
-  public callOpenAITrx(data: IData, recognizedText: string): IData {
-    const command = { command: recognizedText };
-    const oldData = { data: data.lcData };
-    const request = Object.assign(oldData, command);
-    console.log(request);
-
-    this.http
-      .post<IDataResponse>(`http://10.39.101.186:4000/api/lcTrx`, request)
-      .subscribe((result) => {
-        console.log(result.data);
-        if (result.success) {
-          this.navigateData.data.lcData = result.data;
-          this.dataSource.next(this.navigateData);
-        }
-      });
-
-    return this.navigateData.data;
+  public callOpenAITrx(
+    data: INavigateData,
+    recognizedText: string
+  ): Observable<IUserIntentTrx> {
+    const apiUrl = this.baseUrl + '/function/process';
+    const userCommand = `"` + recognizedText + `"`;
+    const fullUrl = `${apiUrl}?userCommand=${encodeURIComponent(userCommand)}`;
+    const mergedJson = {
+      functionData: data.selectedFunction,
+      trxData: data.data.lcData,
+    };
+    console.log(mergedJson);
+    return this.http.post<IUserIntentTrx>(fullUrl, mergedJson, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
   }
 
   public callOpenAIFunction(recognizedText: string): Observable<IFunction> {
@@ -194,12 +182,14 @@ export class DataService {
     return this.http.get<IFunction>(fullUrl);
   }
 
-  public callOpenAITemplates(recognizedText: string): Observable<ITemplateVector[]> {
+  public callOpenAITemplates(
+    recognizedText: string
+  ): Observable<ITemplateVector[]> {
     const apiUrl = this.baseUrl + '/template/search';
     const userCommand = `"` + recognizedText + `"`;
-    const unitCode = "HED0001";
+    const unitCode = 'HED0001';
     const moduleName = this.navigateData.selectedFunction.functionModule;
-    const customerId = "CUST-00000001";
+    const customerId = 'CUST-00000001';
     const fullUrl = `${apiUrl}?userCommand=${encodeURIComponent(
       userCommand
     )}&unitCode=${encodeURIComponent(unitCode)}&moduleName=${encodeURIComponent(
@@ -208,7 +198,10 @@ export class DataService {
     return this.http.get<ITemplateVector[]>(fullUrl);
   }
 
-  public callOpenAIIntent(recognizedText: string, templates: ITemplate[]): Observable<IUserIntent> {
+  public callOpenAIIntent(
+    recognizedText: string,
+    templates: ITemplate[]
+  ): Observable<IUserIntent> {
     const apiUrl = this.baseUrl + '/template/select';
     const userCommand = `"` + recognizedText + `"`;
     const fullUrl = `${apiUrl}?userCommand=${encodeURIComponent(userCommand)}`;
