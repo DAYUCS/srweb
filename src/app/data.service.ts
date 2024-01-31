@@ -32,7 +32,7 @@ export interface LCData {
   additionalAmountsCovered: string;
   AVAL_BY: string;
   draftsAt: string;
-  ADVICE_BANK: string;
+  ADVISE_BANK: string;
 }
 
 export interface FunctionField {
@@ -128,7 +128,7 @@ export class DataService {
       additionalAmountsCovered: 'ADDITIONAL AMOUNTS',
       AVAL_BY: 'BY ACCEPTANCE',
       draftsAt: 'DRAFTS AT',
-      ADVICE_BANK: 'Bank of China',
+      ADVISE_BANK: 'Bank of China',
     },
   };
 
